@@ -1,6 +1,4 @@
-# ais-ecommerce-demo-app
-
-_This project was generated with [create-instantsearch-app](https://github.com/algolia/instantsearch/tree/master/packages/create-instantsearch-app) by [Algolia](https://algolia.com)._
+# Insights:true event bug
 
 ## Get started
 
