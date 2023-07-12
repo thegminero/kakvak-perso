@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Algolia InstantSearch.js Example</title>
+  <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.css@4.2.0/dist/instantsearch.min.css" /> -->
+</head>
+<body>
+  <div id="search-box"></div>
+  <div id="hits"></div>
+  <script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.17.2/dist/algoliasearch-lite.umd.js" integrity="sha256-X2G+vjV8i6Jj2NSGFTvy6Z4q2AlmF5aH0HiIpWJ8eU4=" crossorigin="anonymous"></script>
+  <!-- <script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.5.1/dist/algoliasearch-lite.umd.js"
+        integrity="sha256-EXPXz4W6pQgfYY3yTpnDa3OH8/EPn16ciVsPQ/ypsjk=" crossorigin="anonymous" defer></script> -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4.40.3/dist/instantsearch.production.min.js"  integrity="sha256-xoXf4bDbxjgA1kQ7yMxyhexzvYMRTu4xZLNcYKignCQ=" crossorigin="anonymous"></script> -->
+  <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4.56.1/dist/instantsearch.production.min.js" integrity="sha256-lz9C+x8+6w2rh56x5TrH5iYmE4Js2FiJS5h0tuMz7hQ=" crossorigin="anonymous"></script>
+
+  <script>
+    const search = instantsearch({
+      indexName: 'alko-test',
+      searchClient: algoliasearch('MWN8IH23ME', '85fe6bd7e9c6f4f272a8382329bdd67d'),
+      insights: true
+    });
+    
+    
+    search.addWidgets([
+      instantsearch.widgets.searchBox({
+        container: '#search-box',
+        placeholder: 'Search for products'
+      }),
+      instantsearch.widgets.hits({
+        container: "#hits",
+        templates: {
+          item(hit, { html, components, sendEvent }) {
+            return html`
+              <div>
+                <a href="#" onClick="${() => sendEvent('click', hit, 'Product Clicked')}">
+                  ${components.Highlight({ attribute: 'name_text_es', hit })}
+                </a>
+                <br />
+                <button onClick="${() => sendEvent('conversion', hit, 'Added To Cart')}">add to cart</button>
+              </div>
+            `;
+          },
+        },
+      }), 
+    ]);
+
+    search.start();
+
+  </script>
+</body>
+</html>
