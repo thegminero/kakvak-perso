@@ -7,9 +7,10 @@
 }
 
 /* Instant Search */
-.ais-Hits-list {
+ol.ais-Hits-list {
   display: flex;
-  width: 100%;
+  flex-flow: wrap;
+  width: 70%;
 }
 
 .ais-Hits-item {
@@ -238,3 +239,4 @@ span.price {
 .checkout-options > button:hover{
   background-color: black;
 }
+

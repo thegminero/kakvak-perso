@@ -106,3 +106,36 @@ body {
   from {top: -300px; opacity: 0}
   to {top: 0; opacity: 1}
 }
+
+#search-box {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  place-content: center;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+#dynamicWidgets {
+  width: 25%;
+}
+#hits {
+  width: 60%;
+}
+#container {
+  display: flex;
+  flex-direction: row;
+}
+/* Instant Search */
+.ais-Hits-list {
+  display: flex;
+  flex-flow: wrap;
+  width: 70%;
+}
+
+.ais-Hits-item {
+  display: flex;
+  width: 450px;
+  box-shadow: none;
+  border: 0;
+  margin: 1em;
+}

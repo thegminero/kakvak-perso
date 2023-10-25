@@ -2,19 +2,23 @@
 <html>
 <head>
   <title>Algolia InstantSearch.js Example</title>
+  <!-- <link href="/src/app.css" rel="stylesheet" /> -->
+  <link href="/src/index.css" rel="stylesheet" />
 </head>
 <body>
   <div id="search-box"></div>
-  <div id="hits"></div>
+  <div id="container"> 
+    <div id="dynamicWidgets"></div>
+    <div id="hits"></div>
+  </div>
+  
   <script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.17.2/dist/algoliasearch-lite.umd.js" integrity="sha256-X2G+vjV8i6Jj2NSGFTvy6Z4q2AlmF5aH0HiIpWJ8eU4=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4.56.1/dist/instantsearch.production.min.js" integrity="sha256-lz9C+x8+6w2rh56x5TrH5iYmE4Js2FiJS5h0tuMz7hQ=" crossorigin="anonymous"></script>
 
-  <script>
-    document.addEventListener("DOMContentLoaded", (event) => {
-      
+  <script>      
       const search = instantsearch({
-      indexName: 'IndexName',
-      searchClient: algoliasearch('APPID', 'APIKey'),
+      indexName: 'alkomprarIndexAlgoliaDEV',
+      searchClient: algoliasearch('QX5IPS1B1Q', '04636813b7beb6abd08a7e35f8c880a1'),
       insights: true
     });
     
@@ -37,16 +41,20 @@
             </div>
           `;
         },
-      }
+        },
       }), 
-    ]);
-    
+      instantsearch.widgets.hierarchicalMenu({
+        container:"#dynamicWidgets",
+        attributes: [
+              'hierarchicalcategory_string_mv.lvl0',
+              'hierarchicalcategory_string_mv.lvl1',
+              'hierarchicalcategory_string_mv.lvl2',
+              'hierarchicalcategory_string_mv.lvl3'
+            ],
+      })
+    ]
+    );
     search.start();
-
-    window.aa('setUserToken', 'user-id');
-    
-  });
   </script>
-  <script type="module" src="../components/product-template.js"></script>
 </body>
 </html>
