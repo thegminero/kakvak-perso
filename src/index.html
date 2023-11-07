@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Algolia InstantSearch.js Example</title>
-  <!-- <link href="/src/app.css" rel="stylesheet" /> -->
+  <title>Algolia InstantSearch.js Example With Insights</title>
   <link href="/src/index.css" rel="stylesheet" />
 </head>
 <body>
@@ -17,8 +16,8 @@
 
   <script>      
       const search = instantsearch({
-      indexName: 'alkomprarIndexAlgoliaDEV',
-      searchClient: algoliasearch('QX5IPS1B1Q', '04636813b7beb6abd08a7e35f8c880a1'),
+      indexName: 'YourIndex',
+      searchClient: algoliasearch('AppId', 'SearchApiKey'),
       insights: true
     });
     
@@ -33,8 +32,8 @@
         templates: { item(hit, { html, components, sendEvent }){
           return html`
             <div>
-              <a href="#" onClick="${(e) => {sendEvent('click', hit, 'Product Clicked')}}">
-                ${components.Highlight({ attribute: 'name_text_es', hit })}
+              <a href="#" onClick="${(e) => {e.stopPropagation();sendEvent('click', hit, 'Product Clicked')}}">
+                ${components.Highlight({ attribute: 'title_attribute', hit })}
               </a>
               <br />
               <button onClick="${(e) => {e.stopPropagation();sendEvent('conversion', hit, 'Added To Cart')}}">add to cart</button>
@@ -43,15 +42,7 @@
         },
         },
       }), 
-      instantsearch.widgets.hierarchicalMenu({
-        container:"#dynamicWidgets",
-        attributes: [
-              'hierarchicalcategory_string_mv.lvl0',
-              'hierarchicalcategory_string_mv.lvl1',
-              'hierarchicalcategory_string_mv.lvl2',
-              'hierarchicalcategory_string_mv.lvl3'
-            ],
-      })
+      
     ]
     );
     search.start();
