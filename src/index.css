@@ -119,7 +119,7 @@ body {
   width: 25%;
 }
 #hits {
-  width: 60%;
+  width: 100%;
 }
 #container {
   display: flex;
@@ -129,12 +129,12 @@ body {
 .ais-Hits-list {
   display: flex;
   flex-flow: wrap;
-  width: 70%;
+  width: 100%;
 }
 
 .ais-Hits-item {
   display: flex;
-  width: 450px;
+  width: 250px;
   box-shadow: none;
   border: 0;
   margin: 1em;

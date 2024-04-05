@@ -4,45 +4,88 @@
   <title>Algolia InstantSearch.js Example With Insights</title>
   <link href="/src/index.css" rel="stylesheet" />
 </head>
-<body>
-  <div id="search-box"></div>
-  <div id="container"> 
-    <div id="dynamicWidgets"></div>
-    <div id="hits"></div>
+<body class="w-full">
+  <div id="search-box" class="w-1/3 shadow-md p-8 bg-black"></div>
+  <div id="container" class="flex flex-wrap w-full"> 
+    <div id="side-panel" class="w-2/12">
+      <div class="p-4 my-2 shadow-md">
+        <span class="p-4 my-2">Type</span>
+        <div id="bodyType"></div>
+      </div>
+      <div class="p-4 my-2 shadow-md">
+        <span class="p-4 my-2">Make</span>
+        <div id="carMake"></div>
+      </div>
+      <div class="p-4 my-2 shadow-md">
+        <span class="p-4 my-2">Model</span>
+        <div id="carModel"></div>
+      </div>
+    </div>
+    <div id="center-panel" class="flex w-10/12"> 
+      <div id="hits"></div>
+    </div>
+    <div id="pagination" class="w-full flex bottom-0"></div>
   </div>
   
   <script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.17.2/dist/algoliasearch-lite.umd.js" integrity="sha256-X2G+vjV8i6Jj2NSGFTvy6Z4q2AlmF5aH0HiIpWJ8eU4=" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4.56.1/dist/instantsearch.production.min.js" integrity="sha256-lz9C+x8+6w2rh56x5TrH5iYmE4Js2FiJS5h0tuMz7hQ=" crossorigin="anonymous"></script>
-
-  <script>      
+  <!-- <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4.56.1/dist/instantsearch.production.min.js" integrity="sha256-lz9C+x8+6w2rh56x5TrH5iYmE4Js2FiJS5h0tuMz7hQ=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/instantsearch.js/4.56.11/instantsearch.production.min.js" integrity="sha512-7HHzFdDZXwwm5giyl69DZXVTWqCUS3AEJpGTHUYZsoDSKW4cMu7x46qNx8h0+kpYQxAbInz20LMdxN8wwano+w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
+  <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4.66.1/dist/instantsearch.production.min.js" integrity="sha256-grZOVo8gpqUW03/zmzbKeXkKZ0CSb+C6EKGxBtSSS3U=" crossorigin="anonymous"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  
+  <script> 
+      
       const search = instantsearch({
-      indexName: 'YourIndex',
-      searchClient: algoliasearch('AppId', 'SearchApiKey'),
-      insights: true
-    });
-    
+        indexName: 'olimpo-personalization-test',
+        searchClient: algoliasearch('6OX5BJEPKZ', '575b632d66ad0d9d2877b8e409a4d26d'),
+        insights: true
+      });
+      window.aa('setUserToken', 'anonymous-ab1e0c4c-0523-4dcb-b56f-a3529c465e52')
+      //window.aa('setAuthenticatedUserToken', 'guigui-123')
+      /*Despues de un proceso de login, pueden setear setAuthenticatedUserToken 
+      para que las funcionalidades/experiencia, entre una sesission anonyma y logged in persista
+      */
     
     search.addWidgets([
       instantsearch.widgets.searchBox({
         container: '#search-box',
-        placeholder: 'Search for products'
+        placeholder: 'Search for cars'
       }),
       instantsearch.widgets.hits({
         container: "#hits",
         templates: { item(hit, { html, components, sendEvent }){
-          return html`
-            <div>
-              <a href="#" onClick="${(e) => {e.stopPropagation();sendEvent('click', hit, 'Product Clicked')}}">
-                ${components.Highlight({ attribute: 'title_attribute', hit })}
-              </a>
-              <br />
-              <button onClick="${(e) => {e.stopPropagation();sendEvent('conversion', hit, 'Added To Cart')}}">add to cart</button>
-            </div>
-          `;
-        },
-        },
+          return html`<a class="bg-white p-4 rounded-md shadow-md" onClick="${(e) => {e.stopPropagation(); sendEvent('click', hit, 'Catalogue Search')}}">
+                      <img src="https://images.kavak.services${hit['image_url']}" alt={${hit?.car_name}} class="w-full h-auto mb-4" />
+                      <a class="text-xl font-bold mb-2" href="/#">
+                        ${components.Highlight({ attribute: 'car_name', hit })}
+                      </a>
+                      <br />
+                      <button class="bg-blue-500 text-white px-4 py-2 mt-4" onClick="${(e) => {e.stopPropagation();sendEvent('conversion', hit, 'Added To Cart')}}">add to cart</button>
+                    </a>
+                  `;
+                  
+                },
+              }
       }), 
-      
+      instantsearch.widgets.refinementList({
+        container:"#bodyType",
+        attribute: 'body_type', 
+        searchable: true
+      }),
+      instantsearch.widgets.refinementList({
+        container:"#carMake",
+        attribute: 'car_make', 
+        searchable: true
+      }),
+      instantsearch.widgets.refinementList({
+        container:"#carModel",
+        attribute: 'car_model', 
+        searchable: true
+      }),
+      instantsearch.widgets.pagination({
+        container: '#pagination',
+      })
     ]
     );
     search.start();

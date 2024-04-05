@@ -193,6 +193,10 @@ button {
   margin: 2rem auto;
   text-align: center;
 }
+#pagination > div.ais-Pagination, #container #pagination div.ais-Pagination-list{ 
+  width:100%;
+  display: flex;
+}
 
 /*cart checkout*/
 .cart-container {
