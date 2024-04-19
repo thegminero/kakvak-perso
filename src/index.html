@@ -39,10 +39,11 @@
       const search = instantsearch({
         indexName: 'olimpo-personalization-test',
         searchClient: algoliasearch('6OX5BJEPKZ', '575b632d66ad0d9d2877b8e409a4d26d'),
-        insights: true
+        insights: true,
+        analytics: false
       });
       window.aa('setUserToken', 'anonymous-ab1e0c4c-0523-4dcb-b56f-a3529c465e52')
-      //window.aa('setAuthenticatedUserToken', 'guigui-123')
+      window.aa('setAuthenticatedUserToken', 'guigui-123')
       /*Despues de un proceso de login, pueden setear setAuthenticatedUserToken 
       para que las funcionalidades/experiencia, entre una sesission anonyma y logged in persista
       */
@@ -55,7 +56,7 @@
       instantsearch.widgets.hits({
         container: "#hits",
         templates: { item(hit, { html, components, sendEvent }){
-          return html`<a class="bg-white p-4 rounded-md shadow-md" onClick="${(e) => {e.stopPropagation(); sendEvent('click', hit, 'Catalogue Search')}}">
+          return html`<a class="bg-white p-4 rounded-md shadow-md" onClick="${(e) => {e.stopPropagation(); sendEvent('click', hit, 'Click Product')}}">
                       <img src="https://images.kavak.services${hit['image_url']}" alt={${hit?.car_name}} class="w-full h-auto mb-4" />
                       <a class="text-xl font-bold mb-2" href="/#">
                         ${components.Highlight({ attribute: 'car_name', hit })}
