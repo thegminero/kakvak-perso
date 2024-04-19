@@ -18,12 +18,15 @@ yarn start
 
 Open http://localhost:3000 to see your app.
 
-## Issue
-Clicking add to cart triggers 2 events, 1 click, and 1 conversion
+## Usage
 
-### To reproduce the "issue/bug":
+add index name, appID and search API-key when instantiating Algolia Client
+
+## Events
 
 - click on a product href to see a click event
-- click on a add to cart button to see both a click & conversion event sent simultaneously.
+- click on a add to cart button to see  conversion event.
+- click on a facet filter to send a click event named "Filter Applied"
+- When hits are rendered, a view event of name "Hits Viewed", maximum 20 objectID's per event, if more, split in multiple events
 
 our doc ==> https://www.algolia.com/doc/guides/building-search-ui/events/js/#send-click-events

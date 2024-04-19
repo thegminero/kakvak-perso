@@ -28,8 +28,6 @@
   </div>
   
   <script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.17.2/dist/algoliasearch-lite.umd.js" integrity="sha256-X2G+vjV8i6Jj2NSGFTvy6Z4q2AlmF5aH0HiIpWJ8eU4=" crossorigin="anonymous"></script>
-  <!-- <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4.56.1/dist/instantsearch.production.min.js" integrity="sha256-lz9C+x8+6w2rh56x5TrH5iYmE4Js2FiJS5h0tuMz7hQ=" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/instantsearch.js/4.56.11/instantsearch.production.min.js" integrity="sha512-7HHzFdDZXwwm5giyl69DZXVTWqCUS3AEJpGTHUYZsoDSKW4cMu7x46qNx8h0+kpYQxAbInz20LMdxN8wwano+w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
   <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4.66.1/dist/instantsearch.production.min.js" integrity="sha256-grZOVo8gpqUW03/zmzbKeXkKZ0CSb+C6EKGxBtSSS3U=" crossorigin="anonymous"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   
@@ -37,8 +35,8 @@
   <script> 
       
       const search = instantsearch({
-        indexName: 'olimpo-personalization-test',
-        searchClient: algoliasearch('6OX5BJEPKZ', '575b632d66ad0d9d2877b8e409a4d26d'),
+        indexName: 'indexName',
+        searchClient: algoliasearch('AppID', 'APIKEY'),
         insights: true,
         analytics: false
       });
@@ -46,6 +44,7 @@
       window.aa('setAuthenticatedUserToken', 'guigui-123')
       /*Despues de un proceso de login, pueden setear setAuthenticatedUserToken 
       para que las funcionalidades/experiencia, entre una sesission anonyma y logged in persista
+      - tienen que seguir enviando el anonymo usando setUserToken y el setAuthenticatedUserToken en paralelo
       */
     
     search.addWidgets([
