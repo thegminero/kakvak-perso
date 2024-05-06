@@ -5,8 +5,17 @@
   <link href="/src/index.css" rel="stylesheet" />
 </head>
 <body class="w-full">
+  <div class="header flex w-full justify-center items-center align-center">
   <div id="search-box" class="w-1/3 shadow-md p-8 bg-black"></div>
+  <button onclick="toggleModal()">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+    </svg>
+  </button>
+</div>
+  
   <div id="container" class="flex flex-wrap w-full"> 
+    
     <div id="side-panel" class="w-2/12">
       <div class="p-4 my-2 shadow-md">
         <span class="p-4 my-2">Type</span>
@@ -26,6 +35,36 @@
     </div>
     <div id="pagination" class="w-full flex bottom-0"></div>
   </div>
+
+  <div id="checkout-modal" class="relative z-10 hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+  <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+  <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
+  <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+  <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+    <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+      <div class="sm:flex sm:items-start">
+        <div class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-green-100 sm:mx-0 sm:h-10 sm:w-10">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+          </svg>
+          
+        </div>
+        <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+          <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">Checkout - Items</h3>
+          <div class="mt-2">
+            <p class="text-sm text-gray-500">Checkout your items?</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+      <button onclick="checkoutItems()" type="button" class="inline-flex w-full justify-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto">Checkout</button>
+      <button onclick="toggleModal()" type="button" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Cancel</button>
+    </div>
+  </div>
+  </div>
+</div>
+</div>
   
   <script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.17.2/dist/algoliasearch-lite.umd.js" integrity="sha256-X2G+vjV8i6Jj2NSGFTvy6Z4q2AlmF5aH0HiIpWJ8eU4=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4.66.1/dist/instantsearch.production.min.js" integrity="sha256-grZOVo8gpqUW03/zmzbKeXkKZ0CSb+C6EKGxBtSSS3U=" crossorigin="anonymous"></script>
@@ -33,35 +72,92 @@
   
   
   <script> 
+     document.addEventListener('DOMContentLoaded', function() {
+      // initialize 'aa' after DOMContentLoaded to invoke insights functions to send events outside 
+      // algolia instantsearch template
+      aa('init', {
+        appId: 'AppId',
+        apiKey: 'analytics-api-key'
+      });
+    });
+
+    function toggleModal() {
+      var element = document.getElementById("checkout-modal");
+      element.classList.toggle("hidden");
+    }
+
+    function checkoutItems() {
+      // Sample purchase event with and without queryID
+      aa('purchasedObjectIDsAfterSearch', {
+                    userToken: 'anonymous-ab1e0c4c-0523-4dcb-b56f-a3529c465e52', // required for Node.js
+                    authenticatedUserToken: 'userID-123',
+                    eventName: 'checkout',
+                    index: 'index',
+                    objectIDs: ['WOL-16177', 'Yatesy'],
+                    objectData: [
+                      {
+                        queryID: 'queryID-1',
+                        price: 19.99,
+                        discount: 3.99,
+                        quantity: 3
+                      }, // this object was purchased as the result of a query
+                      {
+                        price: 59.99,
+                        discount: 10,
+                        quantity: 2
+                      } // this object is not associated with a query
+                    ],
+                    value: 179.95,
+                    currency: 'CAD'
+                  });
+                  toggleModal()
+    }
       
       const search = instantsearch({
-        indexName: 'indexName',
-        searchClient: algoliasearch('AppID', 'APIKEY'),
+        indexName: 'index',
+        searchClient: algoliasearch('AppID', 'APIkey'),
         insights: true,
         analytics: false
       });
       window.aa('setUserToken', 'anonymous-ab1e0c4c-0523-4dcb-b56f-a3529c465e52')
-      window.aa('setAuthenticatedUserToken', 'guigui-123')
-      /*Despues de un proceso de login, pueden setear setAuthenticatedUserToken 
-      para que las funcionalidades/experiencia, entre una sesission anonyma y logged in persista
-      - tienen que seguir enviando el anonymo usando setUserToken y el setAuthenticatedUserToken en paralelo
+      window.aa('setAuthenticatedUserToken', 'userID-123')
+      /* After a login process, you can set `setAuthenticatedUserToken` so that the functionalities/experience between an anonymous session and a logged-in one persist.
+        You need to continue sending the anonymous using `setUserToken` and the `setAuthenticatedUserToken` in parallel.
       */
     
     search.addWidgets([
       instantsearch.widgets.searchBox({
         container: '#search-box',
-        placeholder: 'Search for cars'
+        placeholder: 'Search for gear'
       }),
       instantsearch.widgets.hits({
         container: "#hits",
         templates: { item(hit, { html, components, sendEvent }){
           return html`<a class="bg-white p-4 rounded-md shadow-md" onClick="${(e) => {e.stopPropagation(); sendEvent('click', hit, 'Click Product')}}">
-                      <img src="https://images.kavak.services${hit['image_url']}" alt={${hit?.car_name}} class="w-full h-auto mb-4" />
+                      <img src="${hit['image_url']}" alt={${hit?.name}} class="w-36 h-36 mb-4" />
                       <a class="text-xl font-bold mb-2" href="/#">
-                        ${components.Highlight({ attribute: 'car_name', hit })}
+                        ${components.Highlight({ attribute: 'name', hit })}
                       </a>
                       <br />
-                      <button class="bg-blue-500 text-white px-4 py-2 mt-4" onClick="${(e) => {e.stopPropagation();sendEvent('conversion', hit, 'Added To Cart')}}">add to cart</button>
+                      <button class="bg-blue-500 text-white px-4 py-2 mt-4" onClick="${(e) => {
+                                                                                                e.stopPropagation();
+                                                                                                // Sample add to cart event with and without queryID
+                                                                                                sendEvent('conversion', hit, 'Added To Cart', {
+                                                                                                  eventSubtype: 'addToCart',
+                                                                                                  objectData: [
+                                                                                                        {
+                                                                                                          // The discount value for this item, if applicable
+                                                                                                          discount: hit?.discount || 0,
+                                                                                                          // The price value for this item (minus the discount)
+                                                                                                          price: hit?.price || 3.50,
+                                                                                                          // How many of this item were added
+                                                                                                          quantity: 1,
+                                                                                                        },
+                                                                                                      ],
+                                                                                                      value: 3.50 * 1,
+                                                                                                      // The currency code
+                                                                                                      currency: 'USD'
+                                                                                                    })}}">add to cart</button>
                     </a>
                   `;
                   
@@ -70,17 +166,17 @@
       }), 
       instantsearch.widgets.refinementList({
         container:"#bodyType",
-        attribute: 'body_type', 
+        attribute: 'attributes.brand_name', 
         searchable: true
       }),
       instantsearch.widgets.refinementList({
         container:"#carMake",
-        attribute: 'car_make', 
+        attribute: 'attributes.activity', 
         searchable: true
       }),
       instantsearch.widgets.refinementList({
         container:"#carModel",
-        attribute: 'car_model', 
+        attribute: 'attributes.age', 
         searchable: true
       }),
       instantsearch.widgets.pagination({
